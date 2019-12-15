@@ -1,0 +1,206 @@
+ggplot2
+========================================================
+author: Dr. Alok Yadav
+date: 
+autosize: true
+transition: rotate
+
+
+ggplot2 : Introduction
+========================================================
+incremental: true
+ggplot2 is an R package for producing statistical, or data, graphics.
+
+To draw graphs, you are going to use a package called ggplot2 which is more powerful and more versatile than plot() which comes with the basic version of R. 
+
+install.packages("ggplot2")
+
+library(ggplot2) 
+
+Each time you start an R session you will need to activate the package(s) you need, but you don't need to install them again. 
+
+To activate packages, you can either use the command above (library(ggplot2)), or click on Packages in the graph panel. The list of downloaded packages will appear and all you have to do is select the tick box next to the one you want.
+
+ 
+ggplot2 : Grammer of Graphics
+========================================================
+incremental: true
+- Wilkinson (2005) created the grammar of graphics
+
+- The grammar tells us that a statistical graphic is a mapping from data to aesthetic attributes (colour, shape, size) of geometric objects (points, lines, bars).
+
+- Facetting can be used to generate the same plot for different subsets of the dataset.
+
+- Made up of a set of independent components that can be composed in many different ways.
+    
+    This makes ggplot2 very powerful because you are not limited to a set of pre-specified graphics, but you can create new graphics that are precisely tailored for your problem.
+-
+
+
+ggplot2 : Expectations
+========================================================
+
+Instead of spending time making your graph look pretty, you should focus on creating a graph that best reveals the messages in your data.
+-
+
+
+ggplot2 : All plots are composed of
+========================================================
+incremental: true
+- Data we want to visualise and a set of aesthetic mappings describing how variables in the data are mapped to aesthetic attributes that you can perceive.
+
+- Layers made up of geometric elements and statistical transformation. Geometric objects, geoms for short, represent what you actually see on the plot: points, lines, polygons, etc.
+
+- Statistical transformations, summarise data in many useful ways. For example, binning and counting observations to create a histogram, or summarising a 2d rela- tionship with a linear model.
+
+ 
+ggplot2 : All plots are composed of
+========================================================
+incremental: true
+- Scales map values in the data space to values in an aesthetic space, whether it be colour, or size, or shape. Scales
+
+- Coordinate system, coord for short, describes how data coordinates are mapped to the plane of the graphic.
+
+- Faceting specification describes how to break up the data into subsets and how to display those subsets as small multiples. This is also known as conditioning or latticing/trellising.
+
+- Theme which controls the finer points of display, like the font size and background colour.
+
+
+ggplot2 : Dictionary
+========================================================
+    ggplot()          Create a new ggplot 
+                      all plots begin with a call to ggplot()
+                    
+    aes()             Construct aesthetic mappings
+    
+    `+`(<gg>) `%+%`   Add components to a plot
+    
+    qplot(), 
+    quickplot()       Quick plot
+
+qplot(), a handy shortcut for a simple plot without thinking about the grammar at all
+
+
+ggplot2 : htmlwidgets
+========================================================
+incremental: true
+- htmlwidgets, http://www.htmlwidgets.org, provides a common framework for accessing web visualisation tools from R. 
+-
+
+ Packages built on top of htmlwidgets include: 
+
+ leaflet (https://rstudio.github.io/leaflet/, maps) 
+
+ dygraph (http://rstudio.github.io/dygraphs/, time series)
+
+ networkD3 (http://christophergandrud.github.io/networkD3/, networks)
+
+
+ggplot2 : Layers
+======================================================== 
+left: 50%
+![alt text](ggplot_layers.png)
+
+Visual elements in ggplot2 are called geoms (as in geometric objects: bars, points .), and the appearance and location of these geoms (size, colours .) are controlled by the aesthetics properties referred to as aes().
+
+
+ggplot2 : Geometric objects (geom)
+======================================================== 
+incremental: true
+  geom_bar() : creates a layer with bars representing different statistical properties
+  
+  geom_point() : creates a layer with data points (as on a scatterplot)
+  
+  geom_line() : creates a layer with a straight line
+  
+  geom_smooth() : creates a layer with a 'smoother' (a line that summarizes the data as a whole rather than connecting individual points)
+  
+  geom_histogram() : creates a layer with a histogram
+  
+  geom_boxplot() : creates a layer with a box-whisker diagram
+  
+  geom_text() : creates a layer with text in it
+  
+  geom_errorbar() : creates a layer with error bars in it
+  
+  geom_hline() and geom_vline() : creates a layer with a user-defined horizontal or vertical line respectively
+
+
+Getting Started with ggplot                     (1/5)
+=======================================================
+incremental: true
+with mpg dataset 
+- 
+(Fuel economy of popular car models in 1999 and 2008, collected by the US Environmental Protection Agency, https://archive.ics.uci.edu/ml/datasets/auto+mpg)
+
+- There are three key components of every plot: data, aesthetics and geoms
+- Add additional variables to a plot with aesthetics
+- Display additional categorical variables in a plot using small multiples created by facetting
+- Different geoms that can be use to create different types of plots
+- Modify the axes
+
+
+Getting Started with ggplot                    (2/5)
+=======================================================
+incremental: true
+Every ggplot2 plot has three key components: 
+ 1. data, 
+ 2. A set of aesthetic mappings between variables in the data
+ 3. At least one layer which describes how to render each observation. Layers are usually 
+ 
+ ggplot(mpg, aes(x= displ, y= hwy)) + geom_point()
+ -
+ ggplot(mpg, aes(displ, hwy)) + geom_point()
+ -
+- call: data and aesthetic mappings are supplied in ggplot()
+- then layers are added on with +
+- Can construct sophisticated plots by adding on more types of components
+  
+  
+Getting Started with ggplot                    (3/5)
+=======================================================
+incremental: true
+- aes(displ, hwy, colour = class) 
+- aes(displ, hwy, shape = drv) 
+- aes(displ, hwy, size = cyl)  
+
+ ggplot2 takes care of the details of converting data (e.g., 'f', 'r', '4') into
+aesthetics (e.g., 'red', 'yellow', 'green') with a scale
+
+ to set an aesthetic to a fixed value, without scaling it, do so in the individual layer outside of aes()
+ 
+ ggplot(mpg, aes(displ, hwy)) + geom_point(aes(colour = "blue")) 
+ 
+ ggplot(mpg, aes(displ, hwy)) + geom_point(colour = "blue")
+ 
+ ggplot(mpg, aes(hwy)) + geom_histogram() +stat_bin(bins = 1)
+ 
+ ggplot(mpg, aes(hwy)) + geom_histogram() +stat_bin(bins = 50)
+
+Getting Started with ggplot                    (4/5)
+======================================================= 
+ https://cran.r-project.org/web/packages/ggplot2/vignettes/ggplot2-specs.html
+
+- geom smooth() fits a smoother to the data and displays the smooth and its standard error.
+- geom boxplot() produces a box-and-whisker plot to summarise the distri- bution of a set of points.
+- geom histogram() and geom freqpoly() show the distribution of continuous variables.
+- geom bar() shows the distribution of categorical variables.
+- geom path() and geom line() draw lines between the data points.
+
+
+Getting Started with ggplot                    (5/5)
+======================================================= 
+Facetting
+
+Facetting creates tables of graphics by splitting the data into subsets and displaying the same graph for each subset.
+
+There are two types of facetting: grid and wrapped.
+
+  ggplot(mpg, aes(displ, hwy)) + geom_point() + facet_wrap(~class)
+  
+  
+  Getting Started with ggplot                 
+======================================================= 
+
+Practice
+-
